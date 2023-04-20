@@ -1,0 +1,44 @@
+Actividad Final Mini-Proyecto - parte 1
+===
+
+# Expresiones Regulares
+En su mayoría se utiliza la implementación trivial. Más allá de detalles de implementación, los que se presentaron como menos obvios fueron:
+
+- Identificador: [[:lower:]][[:alnum:]_]*
+- String constante: \".*\"
+- Constante entera: [[:digit:]]+
+- Constante flotante: [[:digit:]]+\.[[:digit:]]*
+
+# CFG
+Siguiendo las definiciones indicadas por el lenguaje, se tienen:
+1. <PROGRAMA> ::= prog id ; <PROGRAMA_AUX>
+  - <PROGRAMA_AUX> ::= <CUERPO> end | <VARS> <CUERPO> end
+2. <VARS> ::= var <VARS_GEN>
+  - <VARS_GEN> ::= <TIPO> : <VARS_INNER> ; <VARS_LOOP>
+  - <VARS_LOOP> ::= <VARS_GEN> | \epsilon
+  - <VARS_INNER> ::= id <VARS_INNER_LOOP>
+    - <VARS_INNER_LOOP> ::= , <VARS_INNER> | \epsilon
+3. <TIPO> ::= int | float
+4. <CUERPO> ::= ( <CUERPO_AUX> )
+  - <CUERPO_AUX> ::= <ESTATUTO> <CUERPO_AUX> | \epsilon
+5. <ESTATUTO> ::= <ASIGNA> | <CONDICION> | <CICLO> | <ESCRITURA>
+6. <ASIGNA> ::= id = <EXPRESION> ;
+7. <CONDICION> ::= si ( <EXPRESION> ) <CUERPO> <CONDICION_AUX> ;
+  - <CONDICION_AUX> ::= \epsilon | sino <CUERPO>
+8. <CICLO> ::= mientras ( <EXPRESION> ) <CUERPO> ;
+9. <ESCRITURA> ::= print ( <ESCRITURA_AUX> ) ;
+  - <ESCRITURA_AUX> ::= <ESCRITURA_INNER> <ESCRITURA_FIND>
+  - <ESCRITURA_FIND> ::= \epsilon | , <ESCRITURA_AUX>
+  - <ESCRITURA_INNER> ::= <EXPRESION> | cte.string
+10. <EXPRESION> ::= <EXP> <EXPRESION_COMP>
+  - <EXPRESION_COMP> ::= \epsilon | <EXPRESION_OPERATOR_SELECT> <EXP>
+  - <EXPRESION_OPERATOR_SELECT> ::= > | < | <>
+11. <EXP> ::= <TERMINO> <EXP_AUX>
+  - <EXP_AUX> ::= \epsilon | <EXP_OPERATOR> <EXP>
+  - <EXP_OPERATOR> ::= + | -
+12. <TERMINO> ::= <FACTOR> <TERMINO_AUX>
+  - <TERMINO_AUX> ::= \epsilon | <TERMINO_OPERATOR> <TERMINO>
+  - <TERMINO_OPERATOR> ::= * | /
+13. <FACTOR> ::= ( <EXPRESION> ) | <VAR_CTE> | <FACTOR_CTE_SIGN> <VAR_CTE>
+  - <FACTOR_CTE_SIGN> ::= + | -
+14. <VAR_CTE> ::= id | cte_i | cte_f
