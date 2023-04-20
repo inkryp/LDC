@@ -42,3 +42,12 @@ Siguiendo las definiciones indicadas por el lenguaje, se tienen:
 13. <FACTOR> ::= ( <EXPRESION> ) | <VAR_CTE> | <FACTOR_CTE_SIGN> <VAR_CTE>
   - <FACTOR_CTE_SIGN> ::= + | -
 14. <VAR_CTE> ::= id | cte_i | cte_f
+
+# Uso del proyecto
+```
+lex A00828073_Lexer.l
+gcc lex.yy.c -o ./A00828073.out -ll
+./A00828073.out < ./examples/A00828073.toy # Works just fine
+./A00828073.out < ./examples/A00828073_incremental.toy # Works just fine
+./A00828073.out < ./examples/A00828073_fails.toy # Works just fine as it's just a lexer
+```
