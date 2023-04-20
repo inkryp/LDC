@@ -1,0 +1,19 @@
+prog a00828073_Test;
+var int : x, y, z;
+float : a, b, c;
+int : d, e, f;
+
+[
+	print("Something\n", x);
+	value = 123123;
+	mientras(2 + 2) [
+		si (42 - 42.) [
+			print(laskdjf);
+		]
+		sino [
+			print("laskdjf");
+		];
+	];
+]
+
+end

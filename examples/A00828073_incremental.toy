@@ -1,0 +1,32 @@
+prog a00828073_Test;
+
+[
+  var1 = 1234;
+  var1 = 0.;
+  var1 = 0. > 324;
+  var1 = 2314 < 0.;
+  var1 = 10 + 10. <> 4 + 2 - 213.123 * 23123 + 123 / 54.;
+  var1 = +x * -213.;
+  var1 = (10 <> 10.)  - kljasdf8798asdf798;
+  print((10 <> 10.)  - kljasdf8798asdf798);
+  print((10 <> 10.)  - kljasdf8798asdf798, "314", 0., 0, x);
+  print("314");
+  mientras(jkladsfjlksdajf) [
+    x = 1;
+  ];
+  si ((10 <> 10.)  - kljasdf8798asdf798) [
+    print("HERE");
+    x = lkj2314;
+    mientras(jkladsfjlksdajf) [
+      x = 1;
+    ];
+  ];
+  si ((10 <> 10.)  - kljasdf8798asdf798) [
+    print("HERE");
+    x = lkj2314;
+  ] sino [
+    asldkfj = 123;
+    m9_klj3_ = (10 <> 10.)  - kljasdf8798asdf798;
+  ];
+]
+end
