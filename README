@@ -46,8 +46,9 @@ Siguiendo las definiciones indicadas por el lenguaje, se tienen:
 # Uso del proyecto
 ```
 lex A00828073_Lexer.l
-gcc lex.yy.c -o ./A00828073.out -ll
+yacc -d A00828073_Parser.y
+gcc lex.yy.c y.tab.c -o ./A00828073.out
 ./A00828073.out < ./examples/A00828073.toy # Works just fine
 ./A00828073.out < ./examples/A00828073_incremental.toy # Works just fine
-./A00828073.out < ./examples/A00828073_fails.toy # Works just fine as it's just a lexer
+./A00828073.out < ./examples/A00828073_fails.toy # Message of syntax error
 ```

@@ -487,8 +487,9 @@ char *yytext;
 #line 1 "A00828073_Lexer.l"
 #line 2 "A00828073_Lexer.l"
 #include <stdio.h>
-#line 490 "lex.yy.c"
+#include "y.tab.h"
 #line 491 "lex.yy.c"
+#line 492 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -705,9 +706,9 @@ YY_DECL
 		}
 
 	{
-#line 8 "A00828073_Lexer.l"
+#line 9 "A00828073_Lexer.l"
 
-#line 710 "lex.yy.c"
+#line 711 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -766,171 +767,171 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 9 "A00828073_Lexer.l"
-printf("TOK_PROG\n");
+#line 10 "A00828073_Lexer.l"
+return TOK_PROG;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 10 "A00828073_Lexer.l"
-printf("TOK_END\n");
+#line 11 "A00828073_Lexer.l"
+return TOK_END;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 12 "A00828073_Lexer.l"
-printf("TOK_VAR\n");
+#line 13 "A00828073_Lexer.l"
+return TOK_VAR;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 13 "A00828073_Lexer.l"
-printf("TOK_IF\n");
+#line 14 "A00828073_Lexer.l"
+return TOK_IF;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 14 "A00828073_Lexer.l"
-printf("TOK_ELSE\n");
+#line 15 "A00828073_Lexer.l"
+return TOK_ELSE;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 15 "A00828073_Lexer.l"
-printf("TOK_WHILE\n");
+#line 16 "A00828073_Lexer.l"
+return TOK_WHILE;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 16 "A00828073_Lexer.l"
-printf("TOK_PRINT\n");
+#line 17 "A00828073_Lexer.l"
+return TOK_PRINT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 18 "A00828073_Lexer.l"
-printf("TOK_ASSIGNMENT\n");
+#line 19 "A00828073_Lexer.l"
+return TOK_ASSIGNMENT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 19 "A00828073_Lexer.l"
-printf("TOK_SEMICOLON\n");
+#line 20 "A00828073_Lexer.l"
+return TOK_SEMICOLON;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 20 "A00828073_Lexer.l"
-printf("TOK_COLON\n");
+#line 21 "A00828073_Lexer.l"
+return TOK_COLON;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 21 "A00828073_Lexer.l"
-printf("TOK_COMMA\n");
+#line 22 "A00828073_Lexer.l"
+return TOK_COMMA;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "A00828073_Lexer.l"
-printf("TOK_INT\n");
+#line 24 "A00828073_Lexer.l"
+return TOK_INT;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "A00828073_Lexer.l"
-printf("TOK_FLOAT\n");
+#line 25 "A00828073_Lexer.l"
+return TOK_FLOAT;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 26 "A00828073_Lexer.l"
-printf("TOK_OPEN_PARENTHESIS\n");
+#line 27 "A00828073_Lexer.l"
+return TOK_OPEN_PARENTHESIS;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 27 "A00828073_Lexer.l"
-printf("TOK_CLOSED_PARENTHESIS\n");
+#line 28 "A00828073_Lexer.l"
+return TOK_CLOSED_PARENTHESIS;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 29 "A00828073_Lexer.l"
-printf("TOK_OPEN_BRACKET\n");
+#line 30 "A00828073_Lexer.l"
+return TOK_OPEN_BRACKET;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 30 "A00828073_Lexer.l"
-printf("TOK_CLOSED_BRACKET\n");
+#line 31 "A00828073_Lexer.l"
+return TOK_CLOSED_BRACKET;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 32 "A00828073_Lexer.l"
-printf("TOK_OPEN_BRACE\n");
+#line 33 "A00828073_Lexer.l"
+return TOK_OPEN_BRACE;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 33 "A00828073_Lexer.l"
-printf("TOK_CLOSED_BRACE\n");
+#line 34 "A00828073_Lexer.l"
+return TOK_CLOSED_BRACE;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 35 "A00828073_Lexer.l"
-printf("TOK_PLUS\n");
+#line 36 "A00828073_Lexer.l"
+return TOK_PLUS;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 36 "A00828073_Lexer.l"
-printf("TOK_MINUS\n");
+#line 37 "A00828073_Lexer.l"
+return TOK_MINUS;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 37 "A00828073_Lexer.l"
-printf("TOK_MULTIPLICATION\n");
+#line 38 "A00828073_Lexer.l"
+return TOK_MULTIPLICATION;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 38 "A00828073_Lexer.l"
-printf("TOK_DIVISION\n");
+#line 39 "A00828073_Lexer.l"
+return TOK_DIVISION;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 40 "A00828073_Lexer.l"
-printf("TOK_OTHER_OPERATOR\n");
+#line 41 "A00828073_Lexer.l"
+return TOK_OTHER_OPERATOR;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 41 "A00828073_Lexer.l"
-printf("TOK_LESS_THAN\n");
+#line 42 "A00828073_Lexer.l"
+return TOK_LESS_THAN;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 42 "A00828073_Lexer.l"
-printf("TOK_GREATER_THAN\n");
+#line 43 "A00828073_Lexer.l"
+return TOK_GREATER_THAN;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 44 "A00828073_Lexer.l"
-printf("TOK_IDENTIFIER\n");
+#line 45 "A00828073_Lexer.l"
+return TOK_IDENTIFIER;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 45 "A00828073_Lexer.l"
-printf("TOK_CONST_STRING\n");
+#line 46 "A00828073_Lexer.l"
+return TOK_CONST_STRING;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 46 "A00828073_Lexer.l"
-printf("TOK_CONST_INT\n");
+#line 47 "A00828073_Lexer.l"
+return TOK_CONST_INT;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 47 "A00828073_Lexer.l"
-printf("TOK_CONST_FLOAT\n");
+#line 48 "A00828073_Lexer.l"
+return TOK_CONST_FLOAT;
 	YY_BREAK
 case 31:
 /* rule 31 can match eol */
 YY_RULE_SETUP
-#line 49 "A00828073_Lexer.l"
+#line 50 "A00828073_Lexer.l"
 /* ignore whitespace */
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 50 "A00828073_Lexer.l"
+#line 51 "A00828073_Lexer.l"
 /* ignore whitespace */
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 52 "A00828073_Lexer.l"
+#line 53 "A00828073_Lexer.l"
 ECHO;
 	YY_BREAK
-#line 933 "lex.yy.c"
+#line 934 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1935,6 +1936,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 52 "A00828073_Lexer.l"
+#line 53 "A00828073_Lexer.l"
 
 

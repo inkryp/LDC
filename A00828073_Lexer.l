@@ -1,50 +1,51 @@
 %{
 #include <stdio.h>
+#include "y.tab.h"
 %}
 
 OPEN_PARENTHESIS "("
 CLOSED_PARENTHESIS ")"
 
 %%
-prog                          printf("TOK_PROG\n");
-end                           printf("TOK_END\n");
+prog                          return TOK_PROG;
+end                           return TOK_END;
 
-var                           printf("TOK_VAR\n");
-si                            printf("TOK_IF\n");
-sino                          printf("TOK_ELSE\n");
-mientras                      printf("TOK_WHILE\n");
-print                         printf("TOK_PRINT\n");
+var                           return TOK_VAR;
+si                            return TOK_IF;
+sino                          return TOK_ELSE;
+mientras                      return TOK_WHILE;
+print                         return TOK_PRINT;
 
-=                             printf("TOK_ASSIGNMENT\n");
-;                             printf("TOK_SEMICOLON\n");
-:                             printf("TOK_COLON\n");
-,                             printf("TOK_COMMA\n");
+=                             return TOK_ASSIGNMENT;
+;                             return TOK_SEMICOLON;
+:                             return TOK_COLON;
+,                             return TOK_COMMA;
 
-int                           printf("TOK_INT\n");
-float                         printf("TOK_FLOAT\n");
+int                           return TOK_INT;
+float                         return TOK_FLOAT;
 
-{OPEN_PARENTHESIS}            printf("TOK_OPEN_PARENTHESIS\n");
-{CLOSED_PARENTHESIS}          printf("TOK_CLOSED_PARENTHESIS\n");
+{OPEN_PARENTHESIS}            return TOK_OPEN_PARENTHESIS;
+{CLOSED_PARENTHESIS}          return TOK_CLOSED_PARENTHESIS;
 
-\[                            printf("TOK_OPEN_BRACKET\n");
-\]                            printf("TOK_CLOSED_BRACKET\n");
+\[                            return TOK_OPEN_BRACKET;
+\]                            return TOK_CLOSED_BRACKET;
 
-\{                            printf("TOK_OPEN_BRACE\n");
-\}                            printf("TOK_CLOSED_BRACE\n");
+\{                            return TOK_OPEN_BRACE;
+\}                            return TOK_CLOSED_BRACE;
 
-\+                            printf("TOK_PLUS\n");
-\-                            printf("TOK_MINUS\n");
-\*                            printf("TOK_MULTIPLICATION\n");
-\/                            printf("TOK_DIVISION\n");
+\+                            return TOK_PLUS;
+\-                            return TOK_MINUS;
+\*                            return TOK_MULTIPLICATION;
+\/                            return TOK_DIVISION;
 
-\<\>                          printf("TOK_OTHER_OPERATOR\n");
-\<                            printf("TOK_LESS_THAN\n");
-\>                            printf("TOK_GREATER_THAN\n");
+\<\>                          return TOK_OTHER_OPERATOR;
+\<                            return TOK_LESS_THAN;
+\>                            return TOK_GREATER_THAN;
 
-[[:lower:]][[:alnum:]_]*      printf("TOK_IDENTIFIER\n");
-\".*\"                        printf("TOK_CONST_STRING\n");
-[[:digit:]]+                  printf("TOK_CONST_INT\n");
-[[:digit:]]+\.[[:digit:]]*    printf("TOK_CONST_FLOAT\n");
+[[:lower:]][[:alnum:]_]*      return TOK_IDENTIFIER;
+\".*\"                        return TOK_CONST_STRING;
+[[:digit:]]+                  return TOK_CONST_INT;
+[[:digit:]]+\.[[:digit:]]*    return TOK_CONST_FLOAT;
 
 \n                            /* ignore whitespace */
 [ \t]+                        /* ignore whitespace */
