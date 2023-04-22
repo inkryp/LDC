@@ -134,9 +134,9 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "A00828073_Parser.y"
+#line 1 "Parser.y"
 
-#include "A00828073.h"
+#include "Parser.h"
 
 
 /* Enabling traces.  */
@@ -1665,7 +1665,7 @@ yyreturn:
 }
 
 
-#line 125 "A00828073_Parser.y"
+#line 125 "Parser.y"
 
 
 int main() {
