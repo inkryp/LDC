@@ -487,7 +487,7 @@ char *yytext;
 #line 1 "A00828073_Lexer.l"
 #line 2 "A00828073_Lexer.l"
 #include <stdio.h>
-#include "y.tab.h"
+#include "LittleDuckCompiler.hpp"
 #line 491 "lex.yy.c"
 #line 492 "lex.yy.c"
 

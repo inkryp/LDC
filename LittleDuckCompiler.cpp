@@ -136,25 +136,7 @@
 /* Copy the first part of user declarations.  */
 #line 1 "A00828073_Parser.y"
 
-#include <stdio.h>
-#include <string.h>
-
-int yylex();
-void yyerror(const char *s);
-int yyparse();
- 
-void yyerror(const char *str) {
-  fprintf(stderr, "error: %s\n",str);
-}
- 
-int yywrap() {
-  return 1;
-} 
-  
-int main() {
-  return yyparse();
-} 
-
+#include "A00828073.h"
 
 
 /* Enabling traces.  */
@@ -188,7 +170,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 192 "y.tab.c"
+#line 174 "LittleDuckCompiler.cpp"
 
 #ifdef short
 # undef short
@@ -491,12 +473,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    27,    27,    30,    31,    34,    37,    40,    41,    44,
-      47,    48,    51,    53,    56,    59,    60,    63,    64,    65,
-      66,    69,    72,    74,    76,    79,    82,    85,    87,    89,
-      92,    93,    96,    98,   100,   103,   104,   105,   108,   110,
-     112,   115,   116,   119,   121,   123,   126,   127,   130,   131,
-     132,   135,   136,   139,   140,   141
+       0,     9,     9,    12,    13,    16,    19,    22,    23,    26,
+      29,    30,    33,    35,    38,    41,    42,    45,    46,    47,
+      48,    51,    54,    56,    58,    61,    64,    67,    69,    71,
+      74,    75,    78,    80,    82,    85,    86,    87,    90,    92,
+      94,    97,    98,   101,   103,   105,   108,   109,   112,   113,
+     114,   117,   118,   121,   122,   123
 };
 #endif
 
@@ -1469,7 +1451,7 @@ yyreduce:
     {
       
 /* Line 1267 of yacc.c.  */
-#line 1473 "y.tab.c"
+#line 1455 "LittleDuckCompiler.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1683,6 +1665,10 @@ yyreturn:
 }
 
 
-#line 143 "A00828073_Parser.y"
+#line 125 "A00828073_Parser.y"
 
+
+int main() {
+  return yyparse();
+}
 

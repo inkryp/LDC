@@ -46,8 +46,10 @@ Siguiendo las definiciones indicadas por el lenguaje, se tienen:
 # Uso del proyecto
 ```
 lex A00828073_Lexer.l
-yacc -d A00828073_Parser.y
-gcc lex.yy.c y.tab.c -o ./A00828073.out
+yacc -d A00828073_Parser.y -o LittleDuckCompiler.cpp
+gcc -c lex.yy.c -o lex.yy.o
+g++ -c A00828073.cpp -o A00828073.o
+g++ lex.yy.o A00828073.o LittleDuckCompiler.cpp -o A00828073.out
 ./A00828073.out < ./examples/A00828073.toy # Works just fine
 ./A00828073.out < ./examples/A00828073_incremental.toy # Works just fine
 ./A00828073.out < ./examples/A00828073_fails.toy # Message of syntax error

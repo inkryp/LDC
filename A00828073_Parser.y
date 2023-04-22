@@ -1,23 +1,5 @@
 %{
-#include <stdio.h>
-#include <string.h>
-
-int yylex();
-void yyerror(const char *s);
-int yyparse();
- 
-void yyerror(const char *str) {
-  fprintf(stderr, "error: %s\n",str);
-}
- 
-int yywrap() {
-  return 1;
-} 
-  
-int main() {
-  return yyparse();
-} 
-
+#include "A00828073.h"
 %}
 
 %token TOK_PROG TOK_END TOK_VAR TOK_IF TOK_ELSE TOK_WHILE TOK_PRINT TOK_ASSIGNMENT TOK_SEMICOLON TOK_COLON TOK_COMMA TOK_INT TOK_FLOAT TOK_OPEN_PARENTHESIS TOK_CLOSED_PARENTHESIS TOK_OPEN_BRACKET TOK_CLOSED_BRACKET TOK_OPEN_BRACE TOK_CLOSED_BRACE TOK_PLUS TOK_MINUS TOK_MULTIPLICATION TOK_DIVISION TOK_OTHER_OPERATOR TOK_LESS_THAN TOK_GREATER_THAN TOK_IDENTIFIER TOK_CONST_STRING TOK_CONST_INT TOK_CONST_FLOAT
@@ -141,3 +123,7 @@ var_cte:
 	| TOK_CONST_FLOAT
 
 %%
+
+int main() {
+  return yyparse();
+}
