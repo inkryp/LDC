@@ -898,22 +898,22 @@ return TOK_GREATER_THAN;
 case 27:
 YY_RULE_SETUP
 #line 44 "Lexer.l"
-return TOK_IDENTIFIER;
+{ yylval.str = strdup(yytext); return TOK_IDENTIFIER; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 45 "Lexer.l"
-return TOK_CONST_STRING;
+{ yylval.str = strdup(yytext); return TOK_CONST_STRING; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 46 "Lexer.l"
-return TOK_CONST_INT;
+{ yylval.i = atoi(yytext); return TOK_CONST_INT; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 47 "Lexer.l"
-return TOK_CONST_FLOAT;
+{ yylval.f = atof(yytext); return TOK_CONST_FLOAT; }
 	YY_BREAK
 case 31:
 /* rule 31 can match eol */

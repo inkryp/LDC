@@ -137,6 +137,10 @@
 #line 1 "Parser.y"
 
 #include "Parser.h"
+#include "SymbolTable.h"
+
+#include <iostream>
+auto& symbol_table = ldc::SymbolTable::getInstance();
 
 
 /* Enabling traces.  */
@@ -158,7 +162,16 @@
 #endif
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+#line 9 "Parser.y"
+{
+  int i;
+  float f;
+  char *str;
+}
+/* Line 193 of yacc.c.  */
+#line 174 "LittleDuckCompiler.cpp"
+	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
@@ -170,7 +183,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 174 "LittleDuckCompiler.cpp"
+#line 187 "LittleDuckCompiler.cpp"
 
 #ifdef short
 # undef short
@@ -473,12 +486,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,     9,     9,    12,    13,    16,    19,    22,    23,    26,
-      29,    30,    33,    35,    38,    41,    42,    45,    46,    47,
-      48,    51,    54,    56,    58,    61,    64,    67,    69,    71,
-      74,    75,    78,    80,    82,    85,    86,    87,    90,    92,
-      94,    97,    98,   101,   103,   105,   108,   109,   112,   113,
-     114,   117,   118,   121,   122,   123
+       0,    19,    19,    22,    23,    26,    29,    32,    33,    36,
+      39,    40,    43,    45,    48,    51,    52,    55,    56,    57,
+      58,    61,    64,    66,    68,    71,    74,    77,    79,    81,
+      84,    85,    88,    90,    92,    95,    96,    97,   100,   102,
+     104,   107,   108,   111,   113,   115,   118,   119,   122,   123,
+     124,   127,   128,   131,   132,   133
 };
 #endif
 
@@ -1449,9 +1462,24 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-      
+        case 53:
+#line 131 "Parser.y"
+    { std::cout << (yyval.str) << '\n'; }
+    break;
+
+  case 54:
+#line 132 "Parser.y"
+    { std::cout << (yyval.i) << '\t' << symbol_table.foo((yyval.i)) << '\n'; }
+    break;
+
+  case 55:
+#line 133 "Parser.y"
+    { std::cout << (yyval.f) << '\n'; }
+    break;
+
+
 /* Line 1267 of yacc.c.  */
-#line 1455 "LittleDuckCompiler.cpp"
+#line 1483 "LittleDuckCompiler.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1665,7 +1693,7 @@ yyreturn:
 }
 
 
-#line 125 "Parser.y"
+#line 135 "Parser.y"
 
 
 int main() {

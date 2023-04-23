@@ -41,10 +41,10 @@ float                         return TOK_FLOAT;
 \<                            return TOK_LESS_THAN;
 \>                            return TOK_GREATER_THAN;
 
-[[:lower:]][[:alnum:]_]*      return TOK_IDENTIFIER;
-\".*\"                        return TOK_CONST_STRING;
-[[:digit:]]+                  return TOK_CONST_INT;
-[[:digit:]]+\.[[:digit:]]*    return TOK_CONST_FLOAT;
+[[:lower:]][[:alnum:]_]*      { yylval.str = strdup(yytext); return TOK_IDENTIFIER; }
+\".*\"                        { yylval.str = strdup(yytext); return TOK_CONST_STRING; }
+[[:digit:]]+                  { yylval.i = atoi(yytext); return TOK_CONST_INT; }
+[[:digit:]]+\.[[:digit:]]*    { yylval.f = atof(yytext); return TOK_CONST_FLOAT; }
 
 \n                            /* ignore whitespace */
 [ \t]+                        /* ignore whitespace */

@@ -1,6 +1,16 @@
 %{
 #include "Parser.h"
+#include "SymbolTable.h"
+
+#include <iostream>
+auto& symbol_table = ldc::SymbolTable::getInstance();
 %}
+
+%union {
+  int i;
+  float f;
+  char *str;
+}
 
 %token TOK_PROG TOK_END TOK_VAR TOK_IF TOK_ELSE TOK_WHILE TOK_PRINT TOK_ASSIGNMENT TOK_SEMICOLON TOK_COLON TOK_COMMA TOK_INT TOK_FLOAT TOK_OPEN_PARENTHESIS TOK_CLOSED_PARENTHESIS TOK_OPEN_BRACKET TOK_CLOSED_BRACKET TOK_OPEN_BRACE TOK_CLOSED_BRACE TOK_PLUS TOK_MINUS TOK_MULTIPLICATION TOK_DIVISION TOK_OTHER_OPERATOR TOK_LESS_THAN TOK_GREATER_THAN TOK_IDENTIFIER TOK_CONST_STRING TOK_CONST_INT TOK_CONST_FLOAT
 
@@ -118,9 +128,9 @@ factor_cte_sign:
 	| TOK_MINUS
 
 var_cte:
-	TOK_IDENTIFIER
-	| TOK_CONST_INT
-	| TOK_CONST_FLOAT
+	TOK_IDENTIFIER { std::cout << $<str>$ << '\n'; }
+	| TOK_CONST_INT { std::cout << $<i>$ << '\t' << symbol_table.foo($<i>$) << '\n'; }
+	| TOK_CONST_FLOAT { std::cout << $<f>$ << '\n'; }
 
 %%
 
