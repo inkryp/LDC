@@ -43,8 +43,8 @@ float                         return TOK_FLOAT;
 
 [[:lower:]][[:alnum:]_]*      { yylval.str = strdup(yytext); return TOK_IDENTIFIER; }
 \".*\"                        { yylval.str = strdup(yytext); return TOK_CONST_STRING; }
-[[:digit:]]+                  { yylval.i = atoi(yytext); return TOK_CONST_INT; }
-[[:digit:]]+\.[[:digit:]]*    { yylval.f = atof(yytext); return TOK_CONST_FLOAT; }
+[[:digit:]]+                  { yylval.integer = atoi(yytext); return TOK_CONST_INT; }
+[[:digit:]]+\.[[:digit:]]*    { yylval.floating_point = atof(yytext); return TOK_CONST_FLOAT; }
 
 \n                            /* ignore whitespace */
 [ \t]+                        /* ignore whitespace */
