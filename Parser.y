@@ -40,8 +40,8 @@ vars_inner_loop:
   | /*epsilon*/
 
 tipo:
-  TOK_INT
-  | TOK_FLOAT
+  TOK_INT         { symbol_table.updateCurrentType(ldc::INT); }
+  | TOK_FLOAT     { symbol_table.updateCurrentType(ldc::FLOAT); }
 
 cuerpo:
   TOK_OPEN_BRACKET cuerpo_w TOK_CLOSED_BRACKET
