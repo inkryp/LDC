@@ -1,2 +1,5 @@
 *.o
 *.out
+/Lexer.c
+/LittleDuckCompiler.cpp
+/LittleDuckCompiler.hpp
