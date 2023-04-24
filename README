@@ -46,7 +46,5 @@ Siguiendo las definiciones indicadas por el lenguaje, se tienen:
 # Uso del proyecto
 ```
 make # Requieres GNU Make
-./ldc.out < ./examples/A00828073.toy # Works just fine
-./ldc.out < ./examples/A00828073_incremental.toy # Works just fine
-./ldc.out < ./examples/A00828073_fails.toy # Message of syntax error
+sh ./RunTests.sh # Only the first file works
 ```
