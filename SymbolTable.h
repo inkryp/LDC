@@ -26,6 +26,8 @@ public:
 
   void insert(const char*);
 
+  void checkVariableExists(const char *);
+
   void printTable();
 
 private:

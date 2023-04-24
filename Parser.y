@@ -62,7 +62,10 @@ estatuto:
   | escritura
 
 asigna:
-  TOK_IDENTIFIER TOK_ASSIGNMENT expresion TOK_SEMICOLON
+  TOK_IDENTIFIER TOK_ASSIGNMENT asigna_placeholder { symbol_table.checkVariableExists($<str>$); }
+
+asigna_placeholder:
+  expresion TOK_SEMICOLON
 
 condicion:
   TOK_IF TOK_OPEN_PARENTHESIS expresion TOK_CLOSED_PARENTHESIS cuerpo condicion_aux TOK_SEMICOLON

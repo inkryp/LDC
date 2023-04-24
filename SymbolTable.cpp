@@ -36,6 +36,13 @@ void SymbolTable::insert(const char* id) {
                                                   valToBeAssigned)));
 }
 
+void SymbolTable::checkVariableExists(const char* id) {
+  auto res = table.find(id);
+  if (res == table.end()) {
+    assert(0 && "Variable does not exist!");
+  }
+}
+
 void SymbolTable::printTable() {
   std::cout << "Printing all values:\n";
   for (auto &[key, val] : table) {
