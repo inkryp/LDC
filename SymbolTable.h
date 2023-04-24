@@ -1,8 +1,9 @@
 #ifndef SYMBOLTABLE_H
 #define SYMBOLTABLE_H
 
-#include <unordered_map>
+#include <map>
 #include <variant>
+#include <string>
 
 namespace ldc {
 
@@ -21,8 +22,14 @@ public:
 
   int foo(int x);
 
+  SupportedType getCurrent();
+
+  void insert(const char*);
+
+  void printTable();
+
 private:
-  std::unordered_map<char*, std::tuple<SupportedType, std::variant<int, float>>> table;
+  std::map<const std::string, std::tuple<SupportedType, std::variant<int, float>>> table;
 
   SupportedType currentType = UNDEFINED;
 };

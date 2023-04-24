@@ -19,8 +19,8 @@ program:
   TOK_PROG TOK_IDENTIFIER TOK_SEMICOLON program_factor
 
 program_factor:
-  cuerpo TOK_END
-  | vars cuerpo TOK_END
+  cuerpo TOK_END { symbol_table.printTable(); }
+  | vars cuerpo TOK_END { symbol_table.printTable(); }
 
 vars:
   TOK_VAR vars_gen
@@ -33,7 +33,12 @@ vars_loop:
   | /*epsilon*/
 
 vars_inner:
-  TOK_IDENTIFIER vars_inner_loop
+  TOK_IDENTIFIER vars_inner_placeholder {
+    symbol_table.insert($<str>$);
+  }
+
+vars_inner_placeholder:
+  vars_inner_loop
 
 vars_inner_loop:
   TOK_COMMA vars_inner
