@@ -30,11 +30,17 @@ void SymbolTable::insert(const char *id) {
       std::make_pair(id, std::make_tuple(currentType, valToBeAssigned)));
 }
 
-void SymbolTable::checkVariableExists(const char *id) {
+bool SymbolTable::checkVariableExists(const char *id) {
   auto res = table.find(id);
   if (res == table.end()) {
     assert(0 && "Variable does not exist!");
+    return false;
   }
+  return true;
+}
+
+SymbolTable::SymbolInfo SymbolTable::retrieveFromIdentifier(const char *id) {
+  return table.find(id)->second;
 }
 
 void SymbolTable::printTable() {

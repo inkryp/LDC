@@ -1,8 +1,10 @@
 %{
+#include "ExpressionChecker.h"
 #include "Parser.h"
 #include "SymbolTable.h"
 
-auto& symbol_table = ldc::SymbolTable::getInstance();
+auto &symbol_table = ldc::SymbolTable::getInstance();
+auto &expression_checker = ldc::ExpressionChecker::getInstance();
 %}
 
 %union {
@@ -64,7 +66,13 @@ asigna:
   TOK_IDENTIFIER TOK_ASSIGNMENT asigna_placeholder { symbol_table.checkVariableExists($<str>$); }
 
 asigna_placeholder:
-  expresion TOK_SEMICOLON
+  expresion asigna_placeholder_variable_matches {
+    // TODO: Implement this member function
+    // expression_checker.check();
+  }
+
+asigna_placeholder_variable_matches:
+  TOK_SEMICOLON
 
 condicion:
   TOK_IF TOK_OPEN_PARENTHESIS expresion TOK_CLOSED_PARENTHESIS cuerpo condicion_aux TOK_SEMICOLON
@@ -134,9 +142,9 @@ factor_cte_sign:
   | TOK_MINUS
 
 var_cte:
-  TOK_IDENTIFIER
-  | TOK_CONST_INT
-  | TOK_CONST_FLOAT
+  TOK_IDENTIFIER    { expression_checker.setCurrentOperand($<str>$); }
+  | TOK_CONST_INT   { expression_checker.setCurrentOperand($<integer>$); }
+  | TOK_CONST_FLOAT { expression_checker.setCurrentOperand($<floating_point>$); }
 
 %%
 

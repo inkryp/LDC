@@ -26,7 +26,10 @@ public:
 
   void insert(const char *);
 
-  void checkVariableExists(const char *);
+  bool checkVariableExists(const char *);
+
+  // Probably going to have to refactor this at some point
+  SymbolInfo retrieveFromIdentifier(const char *);
 
   void printTable();
 
