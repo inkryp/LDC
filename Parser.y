@@ -2,7 +2,6 @@
 #include "Parser.h"
 #include "SymbolTable.h"
 
-#include <iostream>
 auto& symbol_table = ldc::SymbolTable::getInstance();
 %}
 
@@ -135,9 +134,9 @@ factor_cte_sign:
   | TOK_MINUS
 
 var_cte:
-  TOK_IDENTIFIER { std::cout << $<str>$ << '\n'; }
-  | TOK_CONST_INT { std::cout << $<integer>$ << '\t' << symbol_table.foo($<integer>$) << '\n'; }
-  | TOK_CONST_FLOAT { std::cout << $<floating_point>$ << '\n'; }
+  TOK_IDENTIFIER
+  | TOK_CONST_INT
+  | TOK_CONST_FLOAT
 
 %%
 
