@@ -20,8 +20,11 @@ program:
   TOK_PROG TOK_IDENTIFIER TOK_SEMICOLON program_factor
 
 program_factor:
-  cuerpo TOK_END { symbol_table.printTable(); }
-  | vars cuerpo TOK_END { symbol_table.printTable(); }
+  cuerpo program_factor_holder
+  | vars cuerpo program_factor_holder
+
+program_factor_holder:
+  TOK_END { symbol_table.dump(); } 
 
 vars:
   TOK_VAR vars_gen
@@ -35,7 +38,7 @@ vars_loop:
 
 vars_inner:
   TOK_IDENTIFIER vars_inner_placeholder {
-    symbol_table.insert($<str>$);
+    if (!symbol_table.insert($<str>$)) YYABORT;
   }
 
 vars_inner_placeholder:
@@ -63,7 +66,7 @@ estatuto:
   | escritura
 
 asigna:
-  TOK_IDENTIFIER TOK_ASSIGNMENT asigna_placeholder { symbol_table.checkVariableExists($<str>$); }
+  TOK_IDENTIFIER TOK_ASSIGNMENT asigna_placeholder { if (!symbol_table.checkVariableExists($<str>$)) YYABORT; }
 
 asigna_placeholder:
   expresion asigna_placeholder_variable_matches {

@@ -10,7 +10,7 @@ void SymbolTable::updateCurrentType(const SupportedType &update) {
 
 SupportedType SymbolTable::getCurrent() { return currentType; }
 
-void SymbolTable::insert(const char *id) {
+bool SymbolTable::insert(const char *id) {
   std::variant<int, float> valToBeAssigned;
   switch (currentType) {
   case INT:
@@ -24,16 +24,20 @@ void SymbolTable::insert(const char *id) {
   }
   auto res = table.find(id);
   if (res != table.end()) {
-    assert(0 && "Variable already declared");
+    std::cerr << "Error: Variable already declared\n\t`" << id
+              << "` was already declared!";
+    return false;
   }
-  table.insert(
-      std::make_pair(id, std::make_tuple(currentType, valToBeAssigned)));
+  return table
+      .insert(std::make_pair(id, std::make_tuple(currentType, valToBeAssigned)))
+      .second;
 }
 
 bool SymbolTable::checkVariableExists(const char *id) {
   auto res = table.find(id);
   if (res == table.end()) {
-    assert(0 && "Variable does not exist!");
+    std::cerr << "Error: Usage of undefined variable\n\t`" << id
+              << "` does not exist!";
     return false;
   }
   return true;
@@ -43,7 +47,7 @@ SymbolTable::SymbolInfo SymbolTable::retrieveFromIdentifier(const char *id) {
   return table.find(id)->second;
 }
 
-void SymbolTable::printTable() {
+void SymbolTable::dump() {
   std::cout << "Printing all values:\n";
   for (auto &[key, val] : table) {
     auto hereType = std::get<0>(val);

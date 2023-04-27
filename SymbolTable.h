@@ -24,14 +24,14 @@ public:
 
   SupportedType getCurrent();
 
-  void insert(const char *);
+  bool insert(const char *);
 
   bool checkVariableExists(const char *);
 
   // Probably going to have to refactor this at some point
   SymbolInfo retrieveFromIdentifier(const char *);
 
-  void printTable();
+  void dump();
 
 private:
   std::map<const std::string, SymbolInfo> table;
