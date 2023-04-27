@@ -29,8 +29,13 @@ bool SymbolTable::insert(const char *id) {
     return false;
   }
   return table
-      .insert(std::make_pair(id, std::make_tuple(currentType, valToBeAssigned)))
+      .insert(std::make_pair(
+          id, std::make_tuple(currentType, valToBeAssigned, true)))
       .second;
+}
+
+bool SymbolTable::insertTemp(SymbolTable::SymbolInfo tmp) {
+  return table.insert({"_tmp_" + std::to_string(cntTmp++), tmp}).second;
 }
 
 bool SymbolTable::checkVariableExists(const char *id) {

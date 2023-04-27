@@ -12,7 +12,9 @@ enum SupportedType { INT, FLOAT, UNDEFINED };
 /// TODO: Come up with a description for this
 class SymbolTable {
 public:
-  typedef std::tuple<SupportedType, std::variant<int, float>> SymbolInfo;
+  typedef bool UserDefined;
+  typedef std::tuple<SupportedType, std::variant<int, float>, UserDefined>
+      SymbolInfo;
 
   /// Implementing a singleton for SymbolTable
   static SymbolTable &getInstance() {
@@ -26,6 +28,8 @@ public:
 
   bool insert(const char *);
 
+  bool insertTemp(SymbolInfo);
+
   bool checkVariableExists(const char *);
 
   // Probably going to have to refactor this at some point
@@ -37,6 +41,8 @@ private:
   std::map<const std::string, SymbolInfo> table;
 
   SupportedType currentType = UNDEFINED;
+
+  int cntTmp = 0;
 };
 } // namespace ldc
 

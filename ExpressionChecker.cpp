@@ -11,9 +11,13 @@ void ExpressionChecker::setCurrentOperand(char *id) {
 }
 
 void ExpressionChecker::setCurrentOperand(int integer) {
-  currentOperand = {INT, integer};
+  SymbolTable::SymbolInfo cur = {INT, integer, false};
+  SymbolTable::getInstance().insertTemp(cur);
+  currentOperand = cur;
 }
 
 void ExpressionChecker::setCurrentOperand(float floatingPoint) {
-  currentOperand = {FLOAT, floatingPoint};
+  SymbolTable::SymbolInfo cur = {FLOAT, floatingPoint, false};
+  SymbolTable::getInstance().insertTemp(cur);
+  currentOperand = cur;
 }
