@@ -7,14 +7,16 @@
 
 namespace ldc {
 
-enum SupportedType { INT, FLOAT, UNDEFINED };
+enum SupportedType { INT, FLOAT, BOOL, UNDEFINED };
 
 /// TODO: Come up with a description for this
 class SymbolTable {
 public:
   typedef bool UserDefined;
-  typedef std::tuple<SupportedType, std::variant<int, float>, UserDefined>
+  typedef std::tuple<SupportedType, std::variant<int, float, bool>, UserDefined>
       SymbolInfo;
+  typedef std::map<const std::string, SymbolTable::SymbolInfo>::iterator
+      SymbolLocation;
 
   /// Implementing a singleton for SymbolTable
   static SymbolTable &getInstance() {
@@ -28,12 +30,14 @@ public:
 
   bool insert(const char *);
 
-  bool insertTemp(SymbolInfo);
+  std::pair<std::map<const std::string, SymbolTable::SymbolInfo>::iterator,
+            bool>
+      insertTemp(SymbolInfo);
 
   bool checkVariableExists(const char *);
 
   // Probably going to have to refactor this at some point
-  SymbolInfo retrieveFromIdentifier(const char *);
+  SymbolLocation retrieveFromIdentifier(const char *);
 
   void dump();
 

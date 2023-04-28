@@ -1,0 +1,8 @@
+prog a00828073_Test;
+var int : a, b, c, d, e, f, g, h, x;
+
+[
+	x = (a + (b - c)) * d + e / f - g * h;
+]
+
+end

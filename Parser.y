@@ -1,10 +1,12 @@
 %{
+#include "CodeGenerator.h"
 #include "ExpressionChecker.h"
 #include "Parser.h"
 #include "SymbolTable.h"
 
 auto &symbol_table = ldc::SymbolTable::getInstance();
 auto &expression_checker = ldc::ExpressionChecker::getInstance();
+auto &code_generator = ldc::CodeGenerator::getInstance();
 %}
 
 %union {
@@ -24,7 +26,7 @@ program_factor:
   | vars cuerpo program_factor_holder
 
 program_factor_holder:
-  TOK_END { symbol_table.dump(); } 
+  TOK_END { symbol_table.dump(); code_generator.dump(); } 
 
 vars:
   TOK_VAR vars_gen
@@ -106,46 +108,70 @@ expresion:
 
 expresion_comp:
   /*epsilon*/
-  | expresion_operator_select exp
+  | expresion_operator_select exp {
+    auto op = expression_checker.peekOperator();
+    if (op && (op == ldc::Quadruple::BinaryOp::LESS_THAN || op == ldc::Quadruple::BinaryOp::GREATER_THAN || op == ldc::Quadruple::OTHER_THAN)) {
+      if (!expression_checker.executeOperation()) {
+        YYABORT;
+      }
+    }  
+  }
 
 expresion_operator_select:
-  TOK_GREATER_THAN
-  | TOK_LESS_THAN
-  | TOK_OTHER_OPERATOR
+  TOK_GREATER_THAN { expression_checker.insertOperator(ldc::Quadruple::GREATER_THAN); }
+  | TOK_LESS_THAN { expression_checker.insertOperator(ldc::Quadruple::LESS_THAN); }
+  | TOK_OTHER_OPERATOR { expression_checker.insertOperator(ldc::Quadruple::OTHER_THAN); }
 
 exp:
-  termino exp_aux
+  termino {
+    auto op = expression_checker.peekOperator();
+    if (op && (op == ldc::Quadruple::BinaryOp::ADDITION || op == ldc::Quadruple::BinaryOp::SUBSTRACTION)) {
+      if (!expression_checker.executeOperation()) {
+        YYABORT;
+      }
+    }  
+  } exp_aux
 
 exp_aux:
   /*epsilon*/
   | exp_operator exp
 
 exp_operator:
-  TOK_PLUS
-  | TOK_MINUS
+  TOK_PLUS { expression_checker.insertOperator(ldc::Quadruple::ADDITION); }
+  | TOK_MINUS { expression_checker.insertOperator(ldc::Quadruple::SUBSTRACTION); }
 
 termino:
-  factor termino_aux
+  factor {
+    auto op = expression_checker.peekOperator();
+    if (op && (op == ldc::Quadruple::BinaryOp::MULTIPLICATION || op == ldc::Quadruple::BinaryOp::DIVISION)) {
+      if (!expression_checker.executeOperation()) {
+        YYABORT;
+      }
+    }  
+  } termino_aux 
 
 termino_aux:
   /*epsilon*/
   | termino_operator termino
 
 termino_operator:
-  TOK_MULTIPLICATION
-  | TOK_DIVISION
+  TOK_MULTIPLICATION { expression_checker.insertOperator(ldc::Quadruple::MULTIPLICATION); }
+  | TOK_DIVISION { expression_checker.insertOperator(ldc::Quadruple::DIVISION); }
 
 factor:
-  TOK_OPEN_PARENTHESIS expresion TOK_CLOSED_PARENTHESIS
-  | var_cte
-  | factor_cte_sign var_cte
+  TOK_OPEN_PARENTHESIS { expression_checker.insertOperator(ldc::Quadruple::PLACEHOLDER); } factor_placeholder 
+  | var_cte { expression_checker.insertCurrentOperand(); }
+  | factor_cte_sign var_cte { /* TODO: Implement this place */ }
+
+factor_placeholder:
+  expresion TOK_CLOSED_PARENTHESIS { if (!expression_checker.removeOperatorPlaceholder()) YYABORT; }
 
 factor_cte_sign:
   TOK_PLUS
   | TOK_MINUS
 
 var_cte:
-  TOK_IDENTIFIER    { expression_checker.setCurrentOperand($<str>$); }
+  TOK_IDENTIFIER    { if (!symbol_table.checkVariableExists($<str>$)) YYABORT; expression_checker.setCurrentOperand($<str>$); }
   | TOK_CONST_INT   { expression_checker.setCurrentOperand($<integer>$); }
   | TOK_CONST_FLOAT { expression_checker.setCurrentOperand($<floating_point>$); }
 

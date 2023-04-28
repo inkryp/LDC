@@ -1,23 +1,23 @@
 #ifndef EXPRESSION_CHECKER_H
 #define EXPRESSION_CHECKER_H
 
+#include "Quadruple.h"
 #include "SymbolTable.h"
+#include <optional>
 #include <stack>
+#include <vector>
 
 namespace ldc {
-
-struct Quadruple {
-  enum Op { MULTIPLICATION, DIVISION, ADDITION, SUBSTRACTION };
-  Op op;
-  SymbolTable::SymbolInfo left, right, result;
-};
 
 /// TODO: Come up with a description
 class ExpressionChecker {
 private:
-  std::stack<SymbolTable::SymbolInfo> operands;
-  std::stack<Quadruple::Op> operators;
-  SymbolTable::SymbolInfo currentOperand;
+  typedef std::variant<int, float, bool> VariantType;
+  std::stack<SymbolTable::SymbolLocation> operands;
+  std::stack<Quadruple::BinaryOp> operators;
+  SymbolTable::SymbolLocation currentOperand;
+  static const std::vector<std::vector<std::vector<SupportedType>>>
+      semanticCube;
 
 public:
   /// Implementing a singleton for ExpressionChecker
@@ -28,6 +28,11 @@ public:
   void setCurrentOperand(char *);
   void setCurrentOperand(int);
   void setCurrentOperand(float);
+  void insertCurrentOperand();
+  void insertOperator(const Quadruple::BinaryOp &);
+  bool removeOperatorPlaceholder();
+  std::optional<Quadruple::BinaryOp> peekOperator();
+  bool executeOperation();
   void check();
 };
 } // namespace ldc
