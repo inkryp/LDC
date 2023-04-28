@@ -68,13 +68,15 @@ estatuto:
   | escritura
 
 asigna:
-  TOK_IDENTIFIER TOK_ASSIGNMENT asigna_placeholder { if (!symbol_table.checkVariableExists($<str>$)) YYABORT; }
+  TOK_IDENTIFIER TOK_ASSIGNMENT asigna_placeholder {
+    if (!symbol_table.checkVariableExists($<str>$)) YYABORT;
+    expression_checker.setCurrentReturnValue($<str>$);
+    if (!expression_checker.check()) YYABORT;
+    
+  }
 
 asigna_placeholder:
-  expresion asigna_placeholder_variable_matches {
-    // TODO: Implement this member function
-    // expression_checker.check();
-  }
+  expresion asigna_placeholder_variable_matches
 
 asigna_placeholder_variable_matches:
   TOK_SEMICOLON

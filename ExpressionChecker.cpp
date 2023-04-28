@@ -8,6 +8,14 @@
 
 using namespace ldc;
 
+void ExpressionChecker::setCurrentReturnValue(char *id) {
+  auto &symbol_table = SymbolTable::getInstance();
+  if (!symbol_table.checkVariableExists(id)) {
+    assert(0 && "Variable does not exist!");
+  }
+  currentReturnValue = symbol_table.retrieveFromIdentifier(id);
+}
+
 void ExpressionChecker::setCurrentOperand(char *id) {
   auto &symbol_table = SymbolTable::getInstance();
   if (!symbol_table.checkVariableExists(id)) {
@@ -94,4 +102,14 @@ bool ExpressionChecker::executeOperation() {
 
 void ExpressionChecker::insertOperator(const Quadruple::BinaryOp &operation) {
   operators.push(operation);
+}
+
+bool ExpressionChecker::check() {
+  if (std::get<0>(currentReturnValue->second) != std::get<0>(currentOperand->second)) {
+    std::cerr << "Error: Type mismatch\nCannot assign value of expression to variable\n";
+    return false;
+  }
+  CodeGenerator::getInstance().insertQuad(
+      {Quadruple::Op::ASSIGN, currentReturnValue, currentOperand, currentOperand});
+  return true;
 }

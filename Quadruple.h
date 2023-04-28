@@ -19,7 +19,7 @@ struct Quadruple {
     OTHER_THAN,
     PLACEHOLDER
   };
-  enum Op { GOTO };
+  enum Op { ASSIGN, GOTO };
   friend std::ostream &operator<<(std::ostream &os, const Quadruple &quad) {
     if (std::holds_alternative<Quadruple::BinaryOp>(quad.op)) {
       auto op = std::get<Quadruple::BinaryOp>(quad.op);
@@ -52,6 +52,9 @@ struct Quadruple {
     } else {
       auto op = std::get<Quadruple::Op>(quad.op);
       switch (op) {
+      case Quadruple::Op::ASSIGN:
+        os << "ASSIGN";
+        break;
       case Quadruple::Op::GOTO:
         os << "OS";
         break;

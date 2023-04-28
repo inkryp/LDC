@@ -15,7 +15,7 @@ private:
   typedef std::variant<int, float, bool> VariantType;
   std::stack<SymbolTable::SymbolLocation> operands;
   std::stack<Quadruple::BinaryOp> operators;
-  SymbolTable::SymbolLocation currentOperand;
+  SymbolTable::SymbolLocation currentOperand, currentReturnValue;
   static const std::vector<std::vector<std::vector<SupportedType>>>
       semanticCube;
 
@@ -25,6 +25,7 @@ public:
     static ExpressionChecker instance;
     return instance;
   }
+  void setCurrentReturnValue(char *);
   void setCurrentOperand(char *);
   void setCurrentOperand(int);
   void setCurrentOperand(float);
@@ -33,7 +34,7 @@ public:
   bool removeOperatorPlaceholder();
   std::optional<Quadruple::BinaryOp> peekOperator();
   bool executeOperation();
-  void check();
+  bool check();
 };
 } // namespace ldc
 

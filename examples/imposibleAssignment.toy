@@ -1,0 +1,8 @@
+prog a00828073_Test;
+var int : x, y, z;
+
+[
+	x = 1 + 2.;
+]
+
+end
