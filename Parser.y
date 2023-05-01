@@ -68,18 +68,12 @@ estatuto:
   | escritura
 
 asigna:
-  TOK_IDENTIFIER TOK_ASSIGNMENT asigna_placeholder {
-    if (!symbol_table.checkVariableExists($<str>$)) YYABORT;
-    expression_checker.setCurrentReturnValue($<str>$);
-    if (!expression_checker.check()) YYABORT;
-    
-  }
-
-asigna_placeholder:
-  expresion asigna_placeholder_variable_matches
-
-asigna_placeholder_variable_matches:
-  TOK_SEMICOLON
+  TOK_IDENTIFIER TOK_ASSIGNMENT {
+    // Thank you...
+    // https://www.ibm.com/docs/en/zos/2.3.0?topic=topics-rules-multiple-actions
+    if (!symbol_table.checkVariableExists($<str>1)) YYABORT;
+    expression_checker.setCurrentReturnValue($<str>1);
+  } expresion { if (!expression_checker.check()) YYABORT; } TOK_SEMICOLON
 
 condicion:
   TOK_IF TOK_OPEN_PARENTHESIS expresion TOK_CLOSED_PARENTHESIS cuerpo condicion_aux TOK_SEMICOLON
