@@ -110,6 +110,6 @@ bool ExpressionChecker::check() {
     return false;
   }
   CodeGenerator::getInstance().insertQuad(
-      {Quadruple::Op::ASSIGN, currentReturnValue, currentOperand, currentOperand});
+      {Quadruple::Op::ASSIGN, currentOperand, {}, currentReturnValue});
   return true;
 }

@@ -63,12 +63,19 @@ struct Quadruple {
         break;
       }
     }
-    os << ' ' << quad.left->first << ' ' << quad.right->first << ' '
-       << quad.result->first;
+    if (quad.left) {
+      os << ' ' << quad.left.value()->first;
+    }
+    if (quad.right) {
+      os << ' ' << quad.right.value()->first;
+    }
+    if (quad.result) {
+      os << ' ' << quad.result.value()->first;
+    }
     return os;
   }
   std::variant<BinaryOp, Op> op;
-  SymbolTable::SymbolLocation left, right, result;
+  std::optional<SymbolTable::SymbolLocation> left, right, result;
 };
 
 } // namespace ldc
