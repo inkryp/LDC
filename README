@@ -46,5 +46,26 @@ Siguiendo las definiciones indicadas por el lenguaje, se tienen:
 # Uso del proyecto
 ```
 make # Requieres GNU Make
-sh ./RunTests.sh # Only the first file works
+sh ./RunTests.sh # Ejecuta los test cases, que en su mayoría son triviales
 ```
+
+# Diseño
+## Tabla de símbolos
+TL;DR: Esto es un desastre
+La idea es contener los valores en un hashmap, con llave el nombre de la variable y valor de una tupla con información importante (SymbolInfo)
+En SymbolInfo se tiene un valor que indica el tipo de variable, el valor de la variable, un booleano que indica si es definido por el usuario y la ubicación en memoria que le corresponde
+
+## Cubo Semántico
+Tenemos 4 tipos importantes: INT, FLOAT, BOOL, STRING.
+Sin embargo
+
+## Cuádruplo
+## Generador de código
+## Manager de Memoria
+
+
+# TODOs:
+[ ] Implementar memoria para valores constantes
+  [ ] Mantener el registro de constantes ya usadas para que no se tengan que repetir
+[ ] La regla `<FACTOR_CTE_SIGN> <VAR_CTE>` de `<FACTOR>` no fue implementada en funcionalidad
+  NOTE: No se eliminó de la gramática para evitar errores en el programa. Sin embargo esas variables se resuelve como positivas. Una solución viable es insertar una instrucción para multiplicar el valor por -1 para que tenga el valor correcto y posteriormente trabajar con esa dirección

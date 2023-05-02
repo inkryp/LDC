@@ -1,4 +1,4 @@
-prog factorial;
+prog while;
 var int : a, b, c, d;
 
 [
@@ -6,7 +6,8 @@ var int : a, b, c, d;
   mientras (c <> b) [
     c = 99;
   ];
-  d = -1;
+  d = - 31;
+  print(d);
 ]
 
 end
