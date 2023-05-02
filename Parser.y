@@ -5,6 +5,9 @@
 #include "SymbolTable.h"
 #include <variant>
 
+template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
+template<class... Ts> overload(Ts...) -> overload<Ts...>;
+
 auto &symbol_table = ldc::SymbolTable::getInstance();
 auto &expression_checker = ldc::ExpressionChecker::getInstance();
 auto &code_generator = ldc::CodeGenerator::getInstance();
@@ -30,7 +33,7 @@ program_factor:
 program_factor_holder:
   TOK_END {
     //symbol_table.dump();
-    code_generator.dump();
+    //code_generator.dump();
     int idx = 0;
     auto quads = code_generator.getQuadruples();
     // Execute the code itself
@@ -39,25 +42,96 @@ program_factor_holder:
       if (std::holds_alternative<ldc::Quadruple::BinaryOp>(quads[idx].op)) {
         auto op = std::get<ldc::Quadruple::BinaryOp>(quads[idx].op);
         assert(quads[idx].left && quads[idx].right && quads[idx].result && "All this values should exist");
-        /*auto left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left)),
+        auto left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left)),
              right = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].right)),
-             result = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].result));*/
+             result = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].result));
         switch (op) {
           case ldc::Quadruple::BinaryOp::ADDITION:
-            //std::get<1>(result->second) = std::get<1>(left->second) + std::get<1>(right->second);
-            //if (auto *resultValue = std::get_if<int>(&(std::get<1>(result->second)))) { }
+            std::visit(overload{
+              [](int& left, int& right, auto&& result) { result = left + right; },
+              [](int& left, float& right, auto&& result) { result = left + right; },
+              [](float& left, int& right, auto&& result) { result = left + right; },
+              [](float& left, float& right, auto&& result) { result = left + right; },
+              [](auto&& left, auto&& right, auto&& result) {
+                std::cerr << "Error: This case should not occurr\n";
+                assert(0);
+              }
+            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
             break;
           case ldc::Quadruple::BinaryOp::SUBSTRACTION:
+            std::visit(overload{
+              [](int& left, int& right, auto&& result) { result = left - right; },
+              [](int& left, float& right, auto&& result) { result = left - right; },
+              [](float& left, int& right, auto&& result) { result = left - right; },
+              [](float& left, float& right, auto&& result) { result = left - right; },
+              [](auto&& left, auto&& right, auto&& result) {
+                std::cerr << "Error: This case should not occurr\n";
+                assert(0);
+              }
+            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
             break;
           case ldc::Quadruple::BinaryOp::MULTIPLICATION:
+            std::visit(overload{
+              [](int& left, int& right, auto&& result) { result = left * right; },
+              [](int& left, float& right, auto&& result) { result = left * right; },
+              [](float& left, int& right, auto&& result) { result = left * right; },
+              [](float& left, float& right, auto&& result) { result = left * right; },
+              [](auto&& left, auto&& right, auto&& result) {
+                std::cerr << "Error: This case should not occurr\n";
+                assert(0);
+              }
+            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
             break;
           case ldc::Quadruple::BinaryOp::DIVISION:
+            std::visit(overload{
+              [](int& left, int& right, auto&& result) { result = left / right; },
+              [](int& left, float& right, auto&& result) { result = left / right; },
+              [](float& left, int& right, auto&& result) { result = left / right; },
+              [](float& left, float& right, auto&& result) { result = left / right; },
+              [](auto&& left, auto&& right, auto&& result) {
+                std::cerr << "Error: This case should not occurr\n";
+                assert(0);
+              }
+            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
             break;
           case ldc::Quadruple::BinaryOp::LESS_THAN:
+            std::visit(overload{
+              [](int& left, int& right, auto&& result) { result = (left < right); },
+              [](int& left, float& right, auto&& result) { result = (left < right); },
+              [](float& left, int& right, auto&& result) { result = (left < right); },
+              [](float& left, float& right, auto&& result) { result = (left < right); },
+              [](bool& left, bool& right, auto&& result) { result = (left < right); },
+              [](auto&& left, auto&& right, auto&& result) {
+                std::cerr << "Error: This case should not occurr\n";
+                assert(0);
+              }
+            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
             break;
           case ldc::Quadruple::BinaryOp::GREATER_THAN:
+            std::visit(overload{
+              [](int& left, int& right, auto&& result) { result = (left > right); },
+              [](int& left, float& right, auto&& result) { result = (left > right); },
+              [](float& left, int& right, auto&& result) { result = (left > right); },
+              [](float& left, float& right, auto&& result) { result = (left > right); },
+              [](bool& left, bool& right, auto&& result) { result = (left > right); },
+              [](auto&& left, auto&& right, auto&& result) {
+                std::cerr << "Error: This case should not occurr\n";
+                assert(0);
+              }
+            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
             break;
           case ldc::Quadruple::BinaryOp::OTHER_THAN:
+            std::visit(overload{
+              [](int& left, int& right, auto&& result) { result = (left != right); },
+              [](int& left, float& right, auto&& result) { result = (left != right); },
+              [](float& left, int& right, auto&& result) { result = (left != right); },
+              [](float& left, float& right, auto&& result) { result = (left != right); },
+              [](bool& left, bool& right, auto&& result) { result = (left != right); },
+              [](auto&& left, auto&& right, auto&& result) {
+                std::cerr << "Error: This case should not occurr\n";
+                assert(0);
+              }
+            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
             break;
           default:
             std::cerr << "Runtime error: Shouldn't get here\n";

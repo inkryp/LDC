@@ -4,15 +4,19 @@ float : a, b, c;
 int : d, e, f;
 
 [
-	print("Something\n", x);
 	x = 1 + 2;
-	mientras(3 < 4) [
+	print("Something\n", x);
+	mientras(x < 5) [
 		si (5 <> 6) [
-			print(z);
+			print(a, b, f);
+			a = 2.71;
+			b = 3.14;
+			f = 42;
 		]
 		sino [
 			print("laskdjf");
 		];
+		x = x + 1;
 	];
 ]
 
