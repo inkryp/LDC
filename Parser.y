@@ -116,8 +116,21 @@ escritura_find:
   | TOK_COMMA escritura_aux
 
 escritura_inner:
-  expresion
-  | TOK_CONST_STRING
+  expresion {
+    auto var = expression_checker.getCurrentOperand();
+    code_generator.insertQuad(
+      {ldc::Quadruple::Op::PRINT, {}, {}, var});
+  }
+  | TOK_CONST_STRING {
+    // TODO: Probably shouldn't have this kind of spaghetti code but whatever
+    auto currentString = ldc::SymbolTable::SymbolInfo(ldc::SupportedType::STRING, $<str>1, false);
+    auto result = symbol_table.insertTemp(currentString);
+    if (!result.second) {
+      assert(0 && "There was an error when inserting a temporary value");
+    }
+    code_generator.insertQuad(
+      {ldc::Quadruple::Op::PRINT, {}, {}, result.first});
+  }
 
 expresion:
   exp expresion_comp

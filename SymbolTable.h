@@ -7,13 +7,14 @@
 
 namespace ldc {
 
-enum SupportedType { INT, FLOAT, BOOL, UNDEFINED };
+enum SupportedType { INT, FLOAT, BOOL, STRING, UNDEFINED };
 
 /// TODO: Come up with a description for this
 class SymbolTable {
 public:
   typedef bool UserDefined;
-  typedef std::tuple<SupportedType, std::variant<int, float, bool>, UserDefined>
+  typedef std::tuple<SupportedType, std::variant<int, float, bool, std::string>,
+                     UserDefined>
       SymbolInfo;
   typedef std::map<const std::string, SymbolTable::SymbolInfo>::iterator
       SymbolLocation;

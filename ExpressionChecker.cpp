@@ -46,6 +46,10 @@ void ExpressionChecker::insertCurrentOperand() {
   operands.push(currentOperand);
 }
 
+SymbolTable::SymbolLocation ExpressionChecker::getCurrentOperand() {
+  return currentOperand;
+}
+
 bool ExpressionChecker::removeOperatorPlaceholder() {
   if (operators.top() != Quadruple::BinaryOp::PLACEHOLDER) {
     std::cerr << "Error";
@@ -83,6 +87,10 @@ bool ExpressionChecker::executeOperation() {
   case SupportedType::BOOL:
     generatedSymbol = {BOOL, bool(), false};
     break;
+  case SupportedType::STRING:
+    std::cerr << "Error: Type `STRING` should not be accesible here\nCompiler "
+                 "error\n";
+    return false;
   case SupportedType::UNDEFINED:
     std::cerr << "Type mismatch\nCannot do operations with "
               << std::get<0>(left->second) << " and "

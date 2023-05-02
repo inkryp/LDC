@@ -1,5 +1,6 @@
 #include "SymbolTable.h"
 #include <iostream>
+#include <string>
 #include <utility>
 
 using namespace ldc;
@@ -11,7 +12,7 @@ void SymbolTable::updateCurrentType(const SupportedType &update) {
 SupportedType SymbolTable::getCurrent() { return currentType; }
 
 bool SymbolTable::insert(const char *id) {
-  std::variant<int, float, bool> valToBeAssigned;
+  std::variant<int, float, bool, std::string> valToBeAssigned;
   switch (currentType) {
   case INT:
     valToBeAssigned = int();
@@ -66,8 +67,10 @@ void SymbolTable::dump() {
       std::cout << std::get<int>(std::get<1>(val)) << '\n';
     } else if (hereType == FLOAT) {
       std::cout << std::get<float>(std::get<1>(val)) << '\n';
-    } else {
+    } else if (hereType == BOOL) {
       std::cout << std::get<bool>(std::get<1>(val)) << '\n';
+    } else {
+      std::cout << std::get<std::string>(std::get<1>(val)) << '\n';
     }
   }
 }

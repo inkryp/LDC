@@ -30,6 +30,7 @@ public:
   void setCurrentOperand(int);
   void setCurrentOperand(float);
   void insertCurrentOperand();
+  SymbolTable::SymbolLocation getCurrentOperand();
   void insertOperator(const Quadruple::BinaryOp &);
   bool removeOperatorPlaceholder();
   std::optional<Quadruple::BinaryOp> peekOperator();
