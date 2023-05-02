@@ -3,10 +3,12 @@
 #include "ExpressionChecker.h"
 #include "Parser.h"
 #include "SymbolTable.h"
+#include <variant>
 
 auto &symbol_table = ldc::SymbolTable::getInstance();
 auto &expression_checker = ldc::ExpressionChecker::getInstance();
 auto &code_generator = ldc::CodeGenerator::getInstance();
+//auto &memory_manager = ldc::CodeExecutor::getInstance();
 %}
 
 %union {
@@ -26,7 +28,90 @@ program_factor:
   | vars cuerpo program_factor_holder
 
 program_factor_holder:
-  TOK_END { symbol_table.dump(); code_generator.dump(); } 
+  TOK_END {
+    //symbol_table.dump();
+    code_generator.dump();
+    int idx = 0;
+    auto quads = code_generator.getQuadruples();
+    // Execute the code itself
+    while (idx < quads.size()) {
+      int new_idx = -1;
+      if (std::holds_alternative<ldc::Quadruple::BinaryOp>(quads[idx].op)) {
+        auto op = std::get<ldc::Quadruple::BinaryOp>(quads[idx].op);
+        assert(quads[idx].left && quads[idx].right && quads[idx].result && "All this values should exist");
+        /*auto left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left)),
+             right = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].right)),
+             result = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].result));*/
+        switch (op) {
+          case ldc::Quadruple::BinaryOp::ADDITION:
+            //std::get<1>(result->second) = std::get<1>(left->second) + std::get<1>(right->second);
+            //if (auto *resultValue = std::get_if<int>(&(std::get<1>(result->second)))) { }
+            break;
+          case ldc::Quadruple::BinaryOp::SUBSTRACTION:
+            break;
+          case ldc::Quadruple::BinaryOp::MULTIPLICATION:
+            break;
+          case ldc::Quadruple::BinaryOp::DIVISION:
+            break;
+          case ldc::Quadruple::BinaryOp::LESS_THAN:
+            break;
+          case ldc::Quadruple::BinaryOp::GREATER_THAN:
+            break;
+          case ldc::Quadruple::BinaryOp::OTHER_THAN:
+            break;
+          default:
+            std::cerr << "Runtime error: Shouldn't get here\n";
+            YYABORT;
+        }
+      } else {
+        auto op = std::get<ldc::Quadruple::Op>(quads[idx].op);
+        ldc::SymbolTable::SymbolLocation left, right, result;
+        int pos;
+        switch (op) {
+          case ldc::Quadruple::Op::ASSIGN:
+            assert(quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
+            left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left));
+            result = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].result));
+            std::get<1>(result->second) = std::get<1>(left->second);
+            break;
+          case ldc::Quadruple::Op::GOTO:
+            assert(!quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
+            pos = std::get<int>(*(quads[idx].result));
+            new_idx = pos;
+            break;
+          case ldc::Quadruple::Op::GOTOF:
+            assert(quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
+            left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left));
+            pos = std::get<int>(*(quads[idx].result));
+            if (!std::get<bool>(std::get<1>(left->second))) {
+              new_idx = pos;
+            }
+            break;
+          case ldc::Quadruple::Op::PRINT:
+            assert(!quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
+            result = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].result));
+            if (auto *val = std::get_if<int>(&(std::get<1>(result->second)))) {
+              std::cout << *val << '\n';
+            } else if (auto *val = std::get_if<float>(&(std::get<1>(result->second)))) {
+              std::cout << *val << '\n';
+            } else if (auto *val = std::get_if<bool>(&(std::get<1>(result->second)))) {
+              std::cout << *val << '\n';
+            } else if (auto *val = std::get_if<std::string>(&(std::get<1>(result->second)))) {
+              std::cout << *val << '\n';
+            }
+            break;
+          default:
+            std::cerr << "Runtime error: Shouldn't get here\n";
+            YYABORT;
+        }
+      }
+      if (new_idx == -1) {
+        ++idx;
+      } else {
+        idx = new_idx;
+      }
+    }
+  } 
 
 vars:
   TOK_VAR vars_gen

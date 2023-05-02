@@ -40,3 +40,7 @@ int CodeGenerator::popLastPendingJump() {
   pendingJumps.pop();
   return val;
 }
+
+std::vector<Quadruple> CodeGenerator::getQuadruples() {
+  return quadruples;
+}
