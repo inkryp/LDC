@@ -13,15 +13,19 @@ SupportedType SymbolTable::getCurrent() { return currentType; }
 
 bool SymbolTable::insert(const char *id) {
   std::variant<int, float, bool, std::string> valToBeAssigned;
+  std::pair<int, int> pos;
   switch (currentType) {
   case INT:
     valToBeAssigned = int();
+    pos = {0, amtEachType[0]++};
     break;
   case FLOAT:
     valToBeAssigned = float();
+    pos = {1, amtEachType[1]++};
     break;
   case BOOL:
     valToBeAssigned = bool();
+    pos = {2, amtEachType[2]++};
     break;
   default:
     assert(0 && "This should never occur");
@@ -34,7 +38,7 @@ bool SymbolTable::insert(const char *id) {
   }
   return table
       .insert(std::make_pair(
-          id, std::make_tuple(currentType, valToBeAssigned, true)))
+          id, std::make_tuple(currentType, valToBeAssigned, true, pos)))
       .second;
 }
 
@@ -73,4 +77,8 @@ void SymbolTable::dump() {
       std::cout << std::get<std::string>(std::get<1>(val)) << '\n';
     }
   }
+}
+
+std::vector<int>& SymbolTable::getAmountEachType() {
+  return amtEachType;
 }

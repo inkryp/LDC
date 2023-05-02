@@ -25,7 +25,9 @@ void ExpressionChecker::setCurrentOperand(char *id) {
 }
 
 void ExpressionChecker::setCurrentOperand(int integer) {
-  SymbolTable::SymbolInfo cur = {INT, integer, false};
+  auto &amtEachType = SymbolTable::getInstance().getAmountEachType();
+  std::pair<int, int> pos = {0, amtEachType[0]++};
+  SymbolTable::SymbolInfo cur = {INT, integer, false, pos};
   auto result = SymbolTable::getInstance().insertTemp(cur);
   if (!result.second) {
     assert(0 && "There was an error when inserting a temporary value");
@@ -34,7 +36,9 @@ void ExpressionChecker::setCurrentOperand(int integer) {
 }
 
 void ExpressionChecker::setCurrentOperand(float floatingPoint) {
-  SymbolTable::SymbolInfo cur = {FLOAT, floatingPoint, false};
+  auto &amtEachType = SymbolTable::getInstance().getAmountEachType();
+  std::pair<int, int> pos = {1, amtEachType[1]++};
+  SymbolTable::SymbolInfo cur = {FLOAT, floatingPoint, false, pos};
   auto result = SymbolTable::getInstance().insertTemp(cur);
   if (!result.second) {
     assert(0 && "There was an error when inserting a temporary value");
@@ -77,15 +81,20 @@ bool ExpressionChecker::executeOperation() {
   auto returnType = semanticCube[std::get<0>(left->second)]
                                 [std::get<0>(right->second)][operation];
   SymbolTable::SymbolInfo generatedSymbol;
+  auto &amtEachType = SymbolTable::getInstance().getAmountEachType();
+  std::pair<int, int> pos;
   switch (returnType) {
   case SupportedType::INT:
-    generatedSymbol = {INT, int(), false};
+    pos = {0, amtEachType[0]++};
+    generatedSymbol = {INT, int(), false, pos};
     break;
   case SupportedType::FLOAT:
-    generatedSymbol = {FLOAT, float(), false};
+    pos = {1, amtEachType[1]++};
+    generatedSymbol = {FLOAT, float(), false, pos};
     break;
   case SupportedType::BOOL:
-    generatedSymbol = {BOOL, bool(), false};
+    pos = {2, amtEachType[2]++};
+    generatedSymbol = {BOOL, bool(), false, pos};
     break;
   case SupportedType::STRING:
     std::cerr << "Error: Type `STRING` should not be accesible here\nCompiler "

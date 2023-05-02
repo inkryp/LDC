@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <utility>
 #include <variant>
 
 namespace ldc {
@@ -14,7 +15,7 @@ class SymbolTable {
 public:
   typedef bool UserDefined;
   typedef std::tuple<SupportedType, std::variant<int, float, bool, std::string>,
-                     UserDefined>
+                     UserDefined, std::pair<int, int>>
       SymbolInfo;
   typedef std::map<const std::string, SymbolTable::SymbolInfo>::iterator
       SymbolLocation;
@@ -42,12 +43,16 @@ public:
 
   void dump();
 
+  std::vector<int>& getAmountEachType();
+
 private:
   std::map<const std::string, SymbolInfo> table;
 
   SupportedType currentType = UNDEFINED;
 
   int cntTmp = 0;
+
+  std::vector<int> amtEachType = {0, 0, 0, 0};
 };
 } // namespace ldc
 

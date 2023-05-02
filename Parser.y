@@ -282,7 +282,9 @@ escritura_inner:
   }
   | TOK_CONST_STRING {
     // TODO: Probably shouldn't have this kind of spaghetti code but whatever
-    auto currentString = ldc::SymbolTable::SymbolInfo(ldc::SupportedType::STRING, $<str>1, false);
+    auto &amtEachType = ldc::SymbolTable::getInstance().getAmountEachType();
+    std::pair<int, int> pos = {3, amtEachType[3]++};
+    auto currentString = ldc::SymbolTable::SymbolInfo(ldc::SupportedType::STRING, $<str>1, false, pos);
     auto result = symbol_table.insertTemp(currentString);
     if (!result.second) {
       assert(0 && "There was an error when inserting a temporary value");
