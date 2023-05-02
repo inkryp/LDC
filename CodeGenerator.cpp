@@ -41,6 +41,4 @@ int CodeGenerator::popLastPendingJump() {
   return val;
 }
 
-std::vector<Quadruple> CodeGenerator::getQuadruples() {
-  return quadruples;
-}
+std::vector<Quadruple> CodeGenerator::getQuadruples() { return quadruples; }

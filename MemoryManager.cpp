@@ -6,7 +6,8 @@ using namespace ldc;
 void MemoryManager::initializeMemory() {
   const auto &amtEachType = SymbolTable::getInstance().getAmountEachType();
   for (const auto &val : amtEachType) {
-    mem.emplace_back(std::vector<std::variant<int, float, bool, std::string>>(val));
+    mem.emplace_back(
+        std::vector<std::variant<int, float, bool, std::string>>(val));
   }
   assert(mem.size() == 4);
   const auto &table = SymbolTable::getInstance().getTable();

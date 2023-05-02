@@ -79,10 +79,8 @@ void SymbolTable::dump() {
   }
 }
 
-std::vector<int>& SymbolTable::getAmountEachType() {
-  return amtEachType;
-}
+std::vector<int> &SymbolTable::getAmountEachType() { return amtEachType; }
 
-std::map<const std::string, SymbolTable::SymbolInfo>& SymbolTable::getTable() {
+std::map<const std::string, SymbolTable::SymbolInfo> &SymbolTable::getTable() {
   return table;
 }
