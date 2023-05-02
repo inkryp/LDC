@@ -1,0 +1,8 @@
+prog wrongIf;
+
+[
+  si (5) [
+  ];
+]
+
+end

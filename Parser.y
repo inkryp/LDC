@@ -76,7 +76,12 @@ asigna:
   } expresion { if (!expression_checker.check()) YYABORT; } TOK_SEMICOLON
 
 condicion:
-  TOK_IF TOK_OPEN_PARENTHESIS expresion TOK_CLOSED_PARENTHESIS cuerpo condicion_aux TOK_SEMICOLON
+  TOK_IF TOK_OPEN_PARENTHESIS expresion {
+    if (!expression_checker.checkBoolExpression()) YYABORT;
+    if (!expression_checker.insertGotoFalse()) YYABORT;
+  } TOK_CLOSED_PARENTHESIS cuerpo condicion_aux TOK_SEMICOLON {
+    if (!code_generator.fillLastPendingJump()) YYABORT;
+  }
 
 condicion_aux:
   /*epsilon*/

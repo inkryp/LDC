@@ -1,0 +1,12 @@
+prog simpleIf;
+var int : a, b, x;
+
+[
+  a = 10;
+  si (a <> b) [
+    x = 4;
+  ];
+  a = 42;
+]
+
+end

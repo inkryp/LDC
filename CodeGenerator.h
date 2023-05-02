@@ -2,6 +2,7 @@
 #define CODE_GENERATOR_H
 
 #include "Quadruple.h"
+#include <stack>
 #include <vector>
 
 namespace ldc {
@@ -10,6 +11,7 @@ namespace ldc {
 class CodeGenerator {
 private:
   std::vector<Quadruple> quadruples;
+  std::stack<int> pendingJumps;
 
 public:
   /// Implementing a singleton for ExpressionChecker
@@ -19,6 +21,8 @@ public:
   }
   void insertQuad(const Quadruple &);
   void dump();
+  void pushbackToPendingJumps(int = -1);
+  bool fillLastPendingJump(int = 0);
 };
 } // namespace ldc
 

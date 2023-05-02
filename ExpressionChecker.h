@@ -35,6 +35,8 @@ public:
   std::optional<Quadruple::BinaryOp> peekOperator();
   bool executeOperation();
   bool check();
+  bool checkBoolExpression();
+  bool insertGotoFalse();
 };
 } // namespace ldc
 

@@ -1,7 +1,8 @@
 prog a00828073_Test;
+var int : x;
 
 [
-  x = 1asdf;
+  x = asdf;
 ]
 
 end

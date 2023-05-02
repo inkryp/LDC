@@ -19,7 +19,7 @@ struct Quadruple {
     OTHER_THAN,
     PLACEHOLDER
   };
-  enum Op { ASSIGN, GOTO };
+  enum Op { ASSIGN, GOTO, GOTOF };
   friend std::ostream &operator<<(std::ostream &os, const Quadruple &quad) {
     if (std::holds_alternative<Quadruple::BinaryOp>(quad.op)) {
       auto op = std::get<Quadruple::BinaryOp>(quad.op);
@@ -56,26 +56,46 @@ struct Quadruple {
         os << "ASSIGN";
         break;
       case Quadruple::Op::GOTO:
-        os << "OS";
+        os << "GOTO";
+        break;
+      case Quadruple::Op::GOTOF:
+        os << "GOTOF";
         break;
       default:
         os << "SHOULDN'T HAPPEN";
         break;
       }
     }
+    // TODO: Rewrite this mess ffs
     if (quad.left) {
-      os << ' ' << quad.left.value()->first;
+      if (std::holds_alternative<int>(quad.left.value())) {
+        os << ' ' << std::get<int>(quad.left.value());
+      } else {
+        os << ' '
+           << std::get<SymbolTable::SymbolLocation>(quad.left.value())->first;
+      }
     }
     if (quad.right) {
-      os << ' ' << quad.right.value()->first;
+      if (std::holds_alternative<int>(quad.right.value())) {
+        os << ' ' << std::get<int>(quad.right.value());
+      } else {
+        os << ' '
+           << std::get<SymbolTable::SymbolLocation>(quad.right.value())->first;
+      }
     }
     if (quad.result) {
-      os << ' ' << quad.result.value()->first;
+      if (std::holds_alternative<int>(quad.result.value())) {
+        os << ' ' << std::get<int>(quad.result.value());
+      } else {
+        os << ' '
+           << std::get<SymbolTable::SymbolLocation>(quad.result.value())->first;
+      }
     }
     return os;
   }
   std::variant<BinaryOp, Op> op;
-  std::optional<SymbolTable::SymbolLocation> left, right, result;
+  std::optional<std::variant<SymbolTable::SymbolLocation, int>> left, right,
+      result;
 };
 
 } // namespace ldc

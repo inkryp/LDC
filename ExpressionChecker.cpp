@@ -105,11 +105,36 @@ void ExpressionChecker::insertOperator(const Quadruple::BinaryOp &operation) {
 }
 
 bool ExpressionChecker::check() {
-  if (std::get<0>(currentReturnValue->second) != std::get<0>(currentOperand->second)) {
-    std::cerr << "Error: Type mismatch\nCannot assign value of expression to variable\n";
+  if (std::get<0>(currentReturnValue->second) !=
+      std::get<0>(currentOperand->second)) {
+    std::cerr << "Error: Type mismatch\nCannot assign value of expression to "
+                 "variable\n";
     return false;
   }
   CodeGenerator::getInstance().insertQuad(
       {Quadruple::Op::ASSIGN, currentOperand, {}, currentReturnValue});
+  return true;
+}
+
+bool ExpressionChecker::checkBoolExpression() {
+  if (std::get<0>(currentOperand->second) != SupportedType::BOOL) {
+    std::cerr
+        << "Error: Type mismatch\nCannot have non BOOL value in conditional\n";
+    return false;
+  }
+  return true;
+}
+
+bool ExpressionChecker::insertGotoFalse() {
+  if (operands.empty()) {
+    std::cerr << "Error: Something went wrong in the compiler side of things\n"
+              << "This event should never actually happen\n";
+    return false;
+  }
+  auto result = operands.top();
+  operands.top();
+  CodeGenerator::getInstance().insertQuad(
+      {Quadruple::Op::GOTOF, result, {}, {}});
+  CodeGenerator::getInstance().pushbackToPendingJumps();
   return true;
 }
