@@ -1,0 +1,26 @@
+prog fibonacci;
+var int : aux, fib, id, cnt, tmp;
+
+[
+  aux = 1;
+  fib = 1;
+  id = 10;
+  cnt = 2;
+  mientras (cnt < id) [
+    tmp = fib;
+    fib = fib + aux;
+    aux = tmp;
+    cnt = cnt + 1;
+  ];
+  si (id < 1) [
+    print("Elemento no valido\nFibonacci debe ser mayor o igual a 1");
+  ] sino [
+    si (id < 2) [
+      print(aux);
+    ] sino [
+        print(fib);
+    ];
+  ];
+]
+
+end

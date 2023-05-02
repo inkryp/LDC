@@ -1,0 +1,14 @@
+prog factorial;
+var int : x, n;
+
+[
+  x = 1;
+  n = 5;
+  mientras (n <> 0) [
+    x = x * n;
+    n = n - 1;
+  ];
+  print(x);
+]
+
+end
