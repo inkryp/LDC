@@ -85,7 +85,12 @@ condicion:
 
 condicion_aux:
   /*epsilon*/
-  | TOK_ELSE cuerpo
+  | TOK_ELSE {
+    code_generator.insertQuad(
+      {ldc::Quadruple::Op::GOTO, {}, {}, {}});
+    if (!code_generator.fillLastPendingJump()) YYABORT;
+    code_generator.pushbackToPendingJumps();
+  } cuerpo
 
 ciclo:
   TOK_WHILE TOK_OPEN_PARENTHESIS expresion TOK_CLOSED_PARENTHESIS cuerpo TOK_SEMICOLON
