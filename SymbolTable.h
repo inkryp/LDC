@@ -45,6 +45,8 @@ public:
 
   std::vector<int>& getAmountEachType();
 
+  std::map<const std::string, SymbolInfo>& getTable();
+
 private:
   std::map<const std::string, SymbolInfo> table;
 

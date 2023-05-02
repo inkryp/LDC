@@ -3,6 +3,7 @@
 #include "ExpressionChecker.h"
 #include "Parser.h"
 #include "SymbolTable.h"
+#include "MemoryManager.h"
 #include <variant>
 
 template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
@@ -11,7 +12,7 @@ template<class... Ts> overload(Ts...) -> overload<Ts...>;
 auto &symbol_table = ldc::SymbolTable::getInstance();
 auto &expression_checker = ldc::ExpressionChecker::getInstance();
 auto &code_generator = ldc::CodeGenerator::getInstance();
-//auto &memory_manager = ldc::CodeExecutor::getInstance();
+auto &memory_manager = ldc::MemoryManager::getInstance();
 %}
 
 %union {
@@ -34,6 +35,7 @@ program_factor_holder:
   TOK_END {
     //symbol_table.dump();
     //code_generator.dump();
+    memory_manager.initializeMemory();
     int idx = 0;
     auto quads = code_generator.getQuadruples();
     // Execute the code itself
@@ -56,7 +58,7 @@ program_factor_holder:
                 std::cerr << "Error: This case should not occurr\n";
                 assert(0);
               }
-            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
+            }, memory_manager.getMemoryLocation(std::get<3>(left->second)), memory_manager.getMemoryLocation(std::get<3>(right->second)), memory_manager.getMemoryLocation(std::get<3>(result->second)));
             break;
           case ldc::Quadruple::BinaryOp::SUBSTRACTION:
             std::visit(overload{
@@ -68,7 +70,7 @@ program_factor_holder:
                 std::cerr << "Error: This case should not occurr\n";
                 assert(0);
               }
-            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
+            }, memory_manager.getMemoryLocation(std::get<3>(left->second)), memory_manager.getMemoryLocation(std::get<3>(right->second)), memory_manager.getMemoryLocation(std::get<3>(result->second)));
             break;
           case ldc::Quadruple::BinaryOp::MULTIPLICATION:
             std::visit(overload{
@@ -80,7 +82,7 @@ program_factor_holder:
                 std::cerr << "Error: This case should not occurr\n";
                 assert(0);
               }
-            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
+            }, memory_manager.getMemoryLocation(std::get<3>(left->second)), memory_manager.getMemoryLocation(std::get<3>(right->second)), memory_manager.getMemoryLocation(std::get<3>(result->second)));
             break;
           case ldc::Quadruple::BinaryOp::DIVISION:
             std::visit(overload{
@@ -92,7 +94,7 @@ program_factor_holder:
                 std::cerr << "Error: This case should not occurr\n";
                 assert(0);
               }
-            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
+            }, memory_manager.getMemoryLocation(std::get<3>(left->second)), memory_manager.getMemoryLocation(std::get<3>(right->second)), memory_manager.getMemoryLocation(std::get<3>(result->second)));
             break;
           case ldc::Quadruple::BinaryOp::LESS_THAN:
             std::visit(overload{
@@ -105,7 +107,7 @@ program_factor_holder:
                 std::cerr << "Error: This case should not occurr\n";
                 assert(0);
               }
-            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
+            }, memory_manager.getMemoryLocation(std::get<3>(left->second)), memory_manager.getMemoryLocation(std::get<3>(right->second)), memory_manager.getMemoryLocation(std::get<3>(result->second)));
             break;
           case ldc::Quadruple::BinaryOp::GREATER_THAN:
             std::visit(overload{
@@ -118,7 +120,7 @@ program_factor_holder:
                 std::cerr << "Error: This case should not occurr\n";
                 assert(0);
               }
-            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
+            }, memory_manager.getMemoryLocation(std::get<3>(left->second)), memory_manager.getMemoryLocation(std::get<3>(right->second)), memory_manager.getMemoryLocation(std::get<3>(result->second)));
             break;
           case ldc::Quadruple::BinaryOp::OTHER_THAN:
             std::visit(overload{
@@ -131,7 +133,7 @@ program_factor_holder:
                 std::cerr << "Error: This case should not occurr\n";
                 assert(0);
               }
-            }, std::get<1>(left->second), std::get<1>(right->second), std::get<1>(result->second));
+            }, memory_manager.getMemoryLocation(std::get<3>(left->second)), memory_manager.getMemoryLocation(std::get<3>(right->second)), memory_manager.getMemoryLocation(std::get<3>(result->second)));
             break;
           default:
             std::cerr << "Runtime error: Shouldn't get here\n";
@@ -146,7 +148,7 @@ program_factor_holder:
             assert(quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
             left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left));
             result = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].result));
-            std::get<1>(result->second) = std::get<1>(left->second);
+            memory_manager.getMemoryLocation(std::get<3>(result->second)) = memory_manager.getMemoryLocation(std::get<3>(left->second));
             break;
           case ldc::Quadruple::Op::GOTO:
             assert(!quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
@@ -157,20 +159,20 @@ program_factor_holder:
             assert(quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
             left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left));
             pos = std::get<int>(*(quads[idx].result));
-            if (!std::get<bool>(std::get<1>(left->second))) {
+            if (!std::get<bool>(memory_manager.getMemoryLocation(std::get<3>(left->second)))) {
               new_idx = pos;
             }
             break;
           case ldc::Quadruple::Op::PRINT:
             assert(!quads[idx].left && !quads[idx].right && quads[idx].result && "All this values should match");
             result = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].result));
-            if (auto *val = std::get_if<int>(&(std::get<1>(result->second)))) {
+            if (auto *val = std::get_if<int>(&(memory_manager.getMemoryLocation(std::get<3>(result->second))))) {
               std::cout << *val << '\n';
-            } else if (auto *val = std::get_if<float>(&(std::get<1>(result->second)))) {
+            } else if (auto *val = std::get_if<float>(&(memory_manager.getMemoryLocation(std::get<3>(result->second))))) {
               std::cout << *val << '\n';
-            } else if (auto *val = std::get_if<bool>(&(std::get<1>(result->second)))) {
+            } else if (auto *val = std::get_if<bool>(&(memory_manager.getMemoryLocation(std::get<3>(result->second))))) {
               std::cout << *val << '\n';
-            } else if (auto *val = std::get_if<std::string>(&(std::get<1>(result->second)))) {
+            } else if (auto *val = std::get_if<std::string>(&(memory_manager.getMemoryLocation(std::get<3>(result->second))))) {
               std::cout << *val << '\n';
             }
             break;
