@@ -23,6 +23,7 @@ public:
   void dump();
   void pushbackToPendingJumps(int = -1);
   bool fillLastPendingJump(int = 0);
+  int popLastPendingJump();
 };
 } // namespace ldc
 

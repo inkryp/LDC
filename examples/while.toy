@@ -1,0 +1,12 @@
+prog factorial;
+var int : a, b, c, d;
+
+[
+  a = 42;
+  mientras (c <> b) [
+    c = 99;
+  ];
+  d = -1;
+]
+
+end

@@ -93,7 +93,17 @@ condicion_aux:
   } cuerpo
 
 ciclo:
-  TOK_WHILE TOK_OPEN_PARENTHESIS expresion TOK_CLOSED_PARENTHESIS cuerpo TOK_SEMICOLON
+  TOK_WHILE {
+    code_generator.pushbackToPendingJumps(0);
+  } TOK_OPEN_PARENTHESIS expresion {
+    if (!expression_checker.checkBoolExpression()) YYABORT;
+    if (!expression_checker.insertGotoFalse()) YYABORT;
+  } TOK_CLOSED_PARENTHESIS cuerpo TOK_SEMICOLON {
+    if (!code_generator.fillLastPendingJump(-1)) YYABORT;
+    auto returnDestination = code_generator.popLastPendingJump();
+    code_generator.insertQuad(
+      {ldc::Quadruple::Op::GOTO, {}, {}, returnDestination});
+  }
 
 escritura:
   TOK_PRINT TOK_OPEN_PARENTHESIS escritura_aux TOK_CLOSED_PARENTHESIS TOK_SEMICOLON

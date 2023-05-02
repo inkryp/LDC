@@ -29,3 +29,14 @@ bool CodeGenerator::fillLastPendingJump(int cnt /*= 0*/) {
   quadruples[currentEnd].result = static_cast<int>(quadruples.size()) - cnt;
   return true;
 }
+
+int CodeGenerator::popLastPendingJump() {
+  if (pendingJumps.empty()) {
+    std::cerr << "Error: Something went wrong in the compiler side of things\n"
+              << "This event should never actually happen\n";
+    return false;
+  }
+  auto val = pendingJumps.top();
+  pendingJumps.pop();
+  return val;
+}
