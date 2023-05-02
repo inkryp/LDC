@@ -6,6 +6,9 @@ OPEN_PARENTHESIS "("
 CLOSED_PARENTHESIS ")"
 
 %%
+repite                        return TOK_DO;
+hasta                         return TOK_UNTIL;
+
 prog                          return TOK_PROG;
 end                           return TOK_END;
 

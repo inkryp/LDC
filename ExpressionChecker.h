@@ -38,6 +38,7 @@ public:
   bool check();
   bool checkBoolExpression();
   bool insertGotoFalse();
+  bool insertGotoTrue(int);
 };
 } // namespace ldc
 

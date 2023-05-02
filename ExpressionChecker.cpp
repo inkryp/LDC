@@ -155,3 +155,16 @@ bool ExpressionChecker::insertGotoFalse() {
   CodeGenerator::getInstance().pushbackToPendingJumps();
   return true;
 }
+
+bool ExpressionChecker::insertGotoTrue(int pos) {
+  if (operands.empty()) {
+    std::cerr << "Error: Something went wrong in the compiler side of things\n"
+              << "This event should never actually happen\n";
+    return false;
+  }
+  auto result = operands.top();
+  operands.top();
+  CodeGenerator::getInstance().insertQuad(
+      {Quadruple::Op::GOTOT, result, {}, pos});
+  return true;
+}

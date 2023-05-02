@@ -24,7 +24,7 @@ public:
   void pushbackToPendingJumps(int = -1);
   bool fillLastPendingJump(int = 0);
   int popLastPendingJump();
-  std::vector<Quadruple> getQuadruples();
+  std::vector<Quadruple>& getQuadruples();
 };
 } // namespace ldc
 

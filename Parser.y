@@ -22,7 +22,7 @@ auto &memory_manager = ldc::MemoryManager::getInstance();
   char *str;
 }
 
-%token TOK_PROG TOK_END TOK_VAR TOK_IF TOK_ELSE TOK_WHILE TOK_PRINT TOK_ASSIGNMENT TOK_SEMICOLON TOK_COLON TOK_COMMA TOK_INT TOK_FLOAT TOK_OPEN_PARENTHESIS TOK_CLOSED_PARENTHESIS TOK_OPEN_BRACKET TOK_CLOSED_BRACKET TOK_OPEN_BRACE TOK_CLOSED_BRACE TOK_PLUS TOK_MINUS TOK_MULTIPLICATION TOK_DIVISION TOK_OTHER_OPERATOR TOK_LESS_THAN TOK_GREATER_THAN TOK_IDENTIFIER TOK_CONST_STRING TOK_CONST_INT TOK_CONST_FLOAT
+%token TOK_DO TOK_UNTIL TOK_PROG TOK_END TOK_VAR TOK_IF TOK_ELSE TOK_WHILE TOK_PRINT TOK_ASSIGNMENT TOK_SEMICOLON TOK_COLON TOK_COMMA TOK_INT TOK_FLOAT TOK_OPEN_PARENTHESIS TOK_CLOSED_PARENTHESIS TOK_OPEN_BRACKET TOK_CLOSED_BRACKET TOK_OPEN_BRACE TOK_CLOSED_BRACE TOK_PLUS TOK_MINUS TOK_MULTIPLICATION TOK_DIVISION TOK_OTHER_OPERATOR TOK_LESS_THAN TOK_GREATER_THAN TOK_IDENTIFIER TOK_CONST_STRING TOK_CONST_INT TOK_CONST_FLOAT
 
 %%
 program:
@@ -38,7 +38,7 @@ program_factor_holder:
     // code_generator.dump();
     memory_manager.initializeMemory();
     int idx = 0;
-    auto quads = code_generator.getQuadruples();
+    auto &quads = code_generator.getQuadruples();
     // Execute the code itself
     while (idx < quads.size()) {
       int new_idx = -1;
@@ -250,6 +250,16 @@ program_factor_holder:
             new_idx = pos;
           }
           break;
+        case ldc::Quadruple::Op::GOTOT:
+          assert(quads[idx].left && !quads[idx].right && quads[idx].result &&
+                 "All this values should match");
+          left = std::get<ldc::SymbolTable::SymbolLocation>(*(quads[idx].left));
+          pos = std::get<int>(*(quads[idx].result));
+          if (std::get<bool>(memory_manager.getMemoryLocation(
+                  std::get<3>(left->second)))) {
+            new_idx = pos;
+          }
+          break;
         case ldc::Quadruple::Op::PRINT:
           assert(!quads[idx].left && !quads[idx].right && quads[idx].result &&
                  "All this values should match");
@@ -329,6 +339,19 @@ estatuto:
   | condicion
   | ciclo
   | escritura
+  | repite_hasta
+
+repite_hasta:
+  TOK_DO {
+    $<integer>$ = code_generator.getQuadruples().size();
+  } cuerpo TOK_UNTIL TOK_OPEN_PARENTHESIS expresion {
+    if (!expression_checker.checkBoolExpression()) {
+      YYABORT;
+    }
+    if (!expression_checker.insertGotoTrue($<integer>2)) {
+      YYABORT;
+    }
+  } TOK_CLOSED_PARENTHESIS TOK_SEMICOLON
 
 asigna:
   TOK_IDENTIFIER TOK_ASSIGNMENT {

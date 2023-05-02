@@ -1,0 +1,16 @@
+prog repeatUntilTest;
+var int : a;
+
+[
+  a = 1;
+  a = 1;
+  a = 1;
+  a = 1;
+  repite [
+    print(a);
+    a = a * 2;
+  ] hasta (a <> 64);
+  print(a);
+]
+
+end
